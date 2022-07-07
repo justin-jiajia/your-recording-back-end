@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
+from authlib.jose import jwt
 from flask import current_app
 from datetime import datetime
 from .extensions import db
@@ -18,10 +18,13 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
 
     def get_token(self):
-        expiration = 3600
-        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
-        token = s.dumps({'id': self.id}).decode('ascii')
-        return token
+        header = {'alg': 'HS256'}
+        payload = {
+            'id': self.id
+        }
+        return jwt.encode(
+            header, payload, str(current_app.config['SECRET_KEY'])
+        ).decode()
 
 
 class Item(db.Model):
