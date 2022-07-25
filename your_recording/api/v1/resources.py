@@ -2,7 +2,9 @@ from your_recording.models import User, Item, Log
 from your_recording.extensions import db, auth
 from your_recording.api.v1 import api_v1
 from your_recording.api.v1.schemas import *
+from flask import current_app
 from apiflask import abort
+from requests import post
 
 
 @api_v1.post('/user/')
@@ -10,7 +12,11 @@ from apiflask import abort
 @api_v1.output(TokenOutSchema)
 def create_user(data):
     if User.query.filter_by(username=data['username']).first():
-        abort(400, f'用户名为{ data["username"] }的用户已存在')
+        abort(400, f'用户名为{data["username"]}的用户已存在')
+    re = post('https://recaptcha.net/recaptcha/api/siteverify',
+              json={'secret': current_app.config['RECAPTCHA_KEY'], 'response': data['re_token']})
+    if not re.json()['success']:
+        abort(400, 'Google验证码错误')
     user = User()
     user.username = data['username']
     user.set_password(data['password'])
@@ -31,6 +37,10 @@ def get_token(data):
         abort(404, '用户名或密码错误')
     if not user.validate_password(data['password']):
         abort(404, '用户名或密码错误')
+    re = post('https://recaptcha.net/recaptcha/api/siteverify',
+              json={'secret': current_app.config['RECAPTCHA_KEY'], 'response': data['re_token']})
+    if not re.json()['success']:
+        abort(400, 'Google验证码错误')
     return {
         'token': f'Bearer {user.get_token()}'
     }

@@ -17,6 +17,8 @@ SECRET_KEY=strong string
 # MySql: mysql://username:password@host/databasename
 # Sqlite: sqlite:////home/ubuntu/notes.db
 SQLALCHEMY_DATABASE_URI = sqlite:////home/ubuntu/notes.db
+#谷歌验证码，请科学上网注册，类型：V2
+RECAPTCHA_KEY = 6Le*********************
 ```
 #### 3.初始化数据库
 ```shell

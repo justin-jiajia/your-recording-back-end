@@ -5,6 +5,7 @@ from apiflask.fields import String, List, Integer, Nested, DateTime
 class TokenInSchema(Schema):
     username = String(required=True)
     password = String(required=True)
+    re_token = String(required=True)
 
 
 class TokenOutSchema(Schema):
@@ -14,6 +15,7 @@ class TokenOutSchema(Schema):
 class UserCreateInSchema(Schema):
     username = String(required=True)
     password = String(required=True)
+    re_token = String(required=True)
 
 
 class LogInSchema(Schema):
