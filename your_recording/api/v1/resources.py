@@ -27,8 +27,10 @@ def create_user(data):
 @api_v1.output(TokenOutSchema)
 def get_token(data):
     user = User.query.filter_by(username=data['username']).first()
+    if not user:
+        abort(404, '用户名或密码错误')
     if not user.validate_password(data['password']):
-        abort(403)
+        abort(404, '用户名或密码错误')
     return {
         'token': f'Bearer {user.get_token()}'
     }
