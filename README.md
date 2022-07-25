@@ -16,7 +16,7 @@ SECRET_KEY=strong string
 # 数据库地址，默认在当前目录生成Sqlite数据库
 # MySql: mysql://username:password@host/databasename
 # Sqlite: sqlite:////home/ubuntu/notes.db
-SQLALCHEMY_DATABASE_URI = sqlite:////home/ubuntu/notes.db
+DATABASE_URL = sqlite:////home/ubuntu/notes.db
 #谷歌验证码，请科学上网注册，类型：V2
 RECAPTCHA_KEY = 6Le*********************
 ```
