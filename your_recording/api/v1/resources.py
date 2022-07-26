@@ -14,7 +14,7 @@ def create_user(data):
     if User.query.filter_by(username=data['username']).first():
         abort(400, f'用户名为{data["username"]}的用户已存在')
     re = post('https://recaptcha.net/recaptcha/api/siteverify',
-              json={'secret': current_app.config['RECAPTCHA_KEY'], 'response': data['re_token']})
+              data={'secret': current_app.config['RECAPTCHA_KEY'], 'response': data['re_token']})
     if not re.json()['success']:
         abort(400, 'Google验证码错误')
     user = User()
@@ -38,7 +38,7 @@ def get_token(data):
     if not user.validate_password(data['password']):
         abort(404, '用户名或密码错误')
     re = post('https://recaptcha.net/recaptcha/api/siteverify',
-              json={'secret': current_app.config['RECAPTCHA_KEY'], 'response': data['re_token']})
+              data={'secret': current_app.config['RECAPTCHA_KEY'], 'response': data['re_token']})
     if not re.json()['success']:
         abort(400, 'Google验证码错误')
     return {
