@@ -1,7 +1,7 @@
 from os import getenv
 from apiflask import APIFlask
 from click import option, confirm, echo
-from .extensions import db
+from .extensions import db, cors
 from .api.v1 import api_v1
 from .settings import config
 
@@ -29,6 +29,7 @@ def register_app(app):
 
 def register_extensions(app):
     db.init_app(app)
+    cors.init_app(app)
 
 
 def register_commands(app):

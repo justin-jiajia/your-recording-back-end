@@ -1,10 +1,12 @@
 from apiflask import HTTPTokenAuth
 from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from authlib.jose import jwt, JoseError
 
 db = SQLAlchemy()
 auth = HTTPTokenAuth()
+cors = CORS()
 
 from .models import User
 
