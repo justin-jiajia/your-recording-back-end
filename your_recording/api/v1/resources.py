@@ -14,9 +14,9 @@ def create_user(data):
     user = User()
     user.username = data['username']
     user.set_password(data['password'])
-    token = user.get_token()
     db.session.add(user)
     db.session.commit()
+    token = user.get_token()
     return {
         'token': f'Bearer {token}'
     }
